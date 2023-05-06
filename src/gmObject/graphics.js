@@ -917,7 +917,9 @@ class Drawing {
  */
 class BoxShape {
   constructor() {
-    this.displayObject = new PIXI.Graphics();
+    this.displayObject = new PIXI.Sprite(PIXI.Texture.WHITE);
+    this.displayObject.anchor.x = 0.5;
+    this.displayObject.anchor.y = 0.5;
     this.lastDrawDef = {};
   }
   hasChanged(newShapeDef) {
@@ -947,19 +949,13 @@ class BoxShape {
         lerpNumber(shapeDefA.size[1], shapeDefB.size[1], weight)],
     };
 
-    this.displayObject.clear();
-    this.displayObject.beginFill(this.lastDrawDef.colour);
-
-    const width = this.lastDrawDef.size[0] * scaleRatio;
-    const height = this.lastDrawDef.size[1] * scaleRatio;
-    this.displayObject.drawRect(width / -2, height / -2, width, height);
-
-    this.displayObject.endFill();
-
     this.displayObject.alpha = this.lastDrawDef.alpha;
     this.displayObject.x = this.lastDrawDef.pos[0] * scaleRatio;
     this.displayObject.y = this.lastDrawDef.pos[1] * scaleRatio;
+    this.displayObject.width = this.lastDrawDef.size[0] * scaleRatio;
+    this.displayObject.height = this.lastDrawDef.size[1] * scaleRatio;
     this.displayObject.angle = this.lastDrawDef.angle;
+    this.displayObject.tint = this.lastDrawDef.colour;
   }
   destroy() {
     this.displayObject.destroy();
