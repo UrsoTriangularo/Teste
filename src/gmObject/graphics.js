@@ -1237,8 +1237,12 @@ class ImageShape {
 
     if (!shapeDefA.pos || !shapeDefB.pos || !shapeDefA.size || !shapeDefB.size) return;
 
-    const stringifiedRegionA = JSON.stringify(this.lastDrawDef.region);
-    const stringifiedRegionB = JSON.stringify(shapeDefB.region);
+    const ra = this.lastDrawDef.region, rb = shapeDefB.region;
+    const regionAEqualB = (ra != null && rb != null) ?
+    ra.pos[0] == rb.pos[1] &&
+    ra.pos[1] == ra.pos[1] &&
+    ra.size[0] == rb.size[0] &&
+    ra.size[1] == ra.size[1] : (ra == null && rb == null);
 
     // property check
     const propsNoChange = this.lastDrawDef.colour == shapeDefB.colour &&
@@ -1249,7 +1253,7 @@ class ImageShape {
     this.lastDrawDef.angle == shapeDefB.angle &&
     this.lastDrawDef.size[0] == shapeDefB.size[0] &&
     this.lastDrawDef.size[1] == shapeDefB.size[1] &&
-    stringifiedRegionA == stringifiedRegionB;
+    regionAEqualB;
 
     if (propsNoChange && !forceUpdate) return;
 
@@ -1271,7 +1275,7 @@ class ImageShape {
       id: shapeDefB.id,
     };
 
-    if (stringifiedRegionA != stringifiedRegionB || forceUpdate) {
+    if (!regionAEqualB || forceUpdate) {
       const frame = this.displayObject.texture.frame;
 
       if (shapeDefB.region) {

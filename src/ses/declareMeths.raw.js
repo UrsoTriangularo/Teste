@@ -61,12 +61,14 @@ function copyDrawings(drawings) {
       
       switch (s.type) {
         case 'im':
-          const r = s.region;
-
           ns.id = s.id;
-          ns.region = {
-            pos: r.pos ? [r.pos[0], r.pos[1]] : [0, 0],
-            size: r.size ? [r.size[0], r.size[1]] : [0, 0],
+
+          const r = s.region;
+          if (r) {
+            ns.region = {
+              pos: r.pos ? [r.pos[0], r.pos[1]] : [0, 0],
+              size: r.size ? [r.size[0], r.size[1]] : [0, 0],
+            }
           };
           ns.size = s.size ? [s.size[0], s.size[1]] : [0, 0];
           break;
